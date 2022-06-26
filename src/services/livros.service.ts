@@ -1,41 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { LivroModel } from 'src/model/livro.model';
 
 @Injectable()
 export class LivroService {
-  livros: LivroModel[] = [
-    new LivroModel(0, 'Liv_01', 'Primeiro Libro', 124),
-    new LivroModel(1, 'Liv_02', 'Segundo Libro', 124),
-    new LivroModel(2, 'Liv_03', 'Terceiro Libro', 124),
-  ];
-
-  obterTodos(): LivroModel[] {
-    return this.livros;
+  constructor(
+    @InjectModel(LivroModel)
+    private livroRepository: typeof LivroModel //repo of books
+  ) {}
+  async obterTodos(): Promise<LivroModel[]> {
+    return this.livroRepository.findAll();
   }
 
-  obterProduto(id: number): LivroModel {
-    return this.livros.find((livros) => livros.id == id);
+  async obterProduto(id: number): Promise<LivroModel> {
+    return this.livroRepository.findByPk(id);
   }
 
-  criarProduto(livro: LivroModel): string {
-    this.livros.push(
-      new LivroModel(livro.id, livro.codigo, livro.descricao, livro.preco)
-    );
-    console.log(this.livros);
-    return 'Produto Criado' + livro.id;
+  async criarProduto(livro: LivroModel): Promise<void> {
+    this.livroRepository.create(livro);
   }
 
-  alterarProduto(livro: LivroModel): string {
-    return 'Produto Alterado';
+  alterarProduto(livro: LivroModel): Promise<[number, LivroModel[]]> {
+    return this.livroRepository.update(livro, {
+      where: {
+        id: livro.id,
+      },
+    });
   }
 
-  deletaProduto(id: number): string {
-    const livroExists = this.livros.find((livro) => livro.id == id);
-    if (livroExists) {
-      const index = this.livros.indexOf(livroExists);
-      this.livros.splice(index, 1);
+  async deletaProduto(id: number): Promise<void> {
+    const livro = await this.obterProduto(id);
+    if (livro) {
+      livro.destroy();
     }
-
-    return 'Produto Alterado com id = ' + id;
   }
 }
