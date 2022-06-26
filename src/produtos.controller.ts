@@ -1,40 +1,46 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put
 } from '@nestjs/common';
+import { LivroModel } from './model/produto.model';
+import { ProdutosService } from './services/produtos.service';
 
 @Controller('produtos')
 export class ProdutosController {
-    @Get()
-    obterTodos(): string {
-        return 'Todos os produtos';
-    }
+  private produtosService: ProdutosService;
+  constructor(produtosService: ProdutosService) {
+    this.produtosService = produtosService;
+  }
 
-    @Get(':id')
-    obterProduto(@Param() params): string {
-        return 'Just one produto, with ID:' + params.id;
-    }
+  @Get()
+  obterTodos(): LivroModel[] {
+    return this.produtosService.obterTodos();
+  }
 
-    @Post()
-    criarProduto(@Body() produto): string {
-        console.log(produto);
-        return 'Produto Criado';
-    }
+  @Get(':id')
+  obterProduto(@Param() params): LivroModel {
+    return this.produtosService.obterProduto(params.id);
+  }
 
-    @Put()
-    alterarProduto(@Body() produto): string {
-        console.log(produto);
-        return 'Produto Alterado';
-    }
+  @Post()
+  criarProduto(@Body() livro: LivroModel): string {
+    this.produtosService.criarProduto(livro);
+    return 'Produto Criado';
+  }
 
-    @Delete()
-    deletaProduto(@Param() id: number): string {
-        console.log(id);
-        return 'Produto Alterado com id = ' + id;
-    }
+  @Put()
+  alterarProduto(@Body() livro: LivroModel): string {
+    return 'Produto Alterado';
+  }
+
+  @Delete(':id')
+  deletaProduto(@Param() params): string {
+    this.produtosService.deletaProduto(params.id);
+    return 'Produto Alterado com id = ' + params.id;
+  }
 }
