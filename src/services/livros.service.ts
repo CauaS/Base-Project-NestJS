@@ -14,7 +14,7 @@ export class LivroService {
   }
 
   obterProduto(id: number): LivroModel {
-    return this.livros.find((livros) => livros.id === id);
+    return this.livros.find((livros) => livros.id == id);
   }
 
   criarProduto(livro: LivroModel): string {
