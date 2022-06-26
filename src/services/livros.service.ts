@@ -20,7 +20,7 @@ export class LivroService {
     this.livroRepository.create(livro);
   }
 
-  alterarProduto(livro: LivroModel): Promise<[number, LivroModel[]]> {
+  async alterarProduto(livro: LivroModel): Promise<[number, LivroModel[]]> {
     return this.livroRepository.update(livro, {
       where: {
         id: livro.id,
