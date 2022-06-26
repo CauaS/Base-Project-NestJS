@@ -7,8 +7,8 @@ import {
   Post,
   Put
 } from '@nestjs/common';
-import { LivroModel } from './model/produto.model';
-import { ProdutosService } from './services/produtos.service';
+import { LivroModel } from '../model/produto.model';
+import { ProdutosService } from '../services/produtos.service';
 
 @Controller('produtos')
 export class ProdutosController {
