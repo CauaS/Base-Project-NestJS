@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { LivroModel } from 'src/model/produto.model';
+import { LivroModel } from 'src/model/livro.model';
 
 @Injectable()
-export class ProdutosService {
+export class LivroService {
   livros: LivroModel[] = [
     new LivroModel(0, 'Liv_01', 'Primeiro Libro', 124),
     new LivroModel(1, 'Liv_02', 'Segundo Libro', 124),
