@@ -18,13 +18,13 @@ export class ProdutosController {
   }
 
   @Get()
-  obterTodos(): LivroModel[] {
-    return this.livroService.obterTodos();
+  async obterTodos(): Promise<LivroModel[]> {
+    return await this.livroService.obterTodos();
   }
 
   @Get(':id')
-  obterProduto(@Param() params): LivroModel {
-    return this.livroService.obterProduto(params.id);
+  async obterProduto(@Param() params): Promise<LivroModel> {
+    return await this.livroService.obterProduto(params.id);
   }
 
   @Post()
@@ -34,14 +34,14 @@ export class ProdutosController {
   }
 
   @Put()
-  alterarProduto(@Body() livro: LivroModel): string {
-    this.livroService.alterarProduto(livro);
-    return 'Produto Alterado';
+  async alterarProduto(
+    @Body() livro: LivroModel
+  ): Promise<[number, LivroModel[]]> {
+    return this.livroService.alterarProduto(livro);
   }
 
   @Delete(':id')
-  deletaProduto(@Param() params): string {
-    this.livroService.deletaProduto(params.id);
-    return 'Produto Alterado com id = ' + params.id;
+  async deletaProduto(@Param() params): Promise<void> {
+    await this.livroService.deletaProduto(params.id);
   }
 }
