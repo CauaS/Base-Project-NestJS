@@ -30,7 +30,7 @@ export class ProdutosController {
   @Post()
   criarProduto(@Body() livro: LivroModel): string {
     this.livroService.criarProduto(livro);
-    return 'Produto Criado';
+    return 'Produto Criado com sucesso!';
   }
 
   @Put()
